@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import {Image, ScrollView, StyleSheet, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {connect} from "react-redux";
 import type {Card} from "./store/DeckTypes";
 import {addDeck} from "./store/DecksReducer";
@@ -8,11 +8,16 @@ import * as DeckLoader from "./DeckLoader";
 import {viewportHeight, wp} from "./ViewUtils";
 
 
-const CardPreview = ({card}: { card: Card }) => {
+const CardPreview = ({card, navigation, index}: { card: Card, navigation: any }) => {
   return (
     <View style={styles.cardPreviewContainer}>
-      <Image style={styles.image}
-             source={{uri: `https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${card.multiverseId}&type=card`}}/>
+      <TouchableOpacity style={{flex: 1}} onPress={() => {
+        console.log(`${card.name} clicked with index: ${index}`);
+        navigation.navigate('Carousel', {index});
+      }}>
+        <Image style={styles.image}
+               source={{uri: `https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${card.multiverseId}&type=card`}}/>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -30,7 +35,7 @@ class DeckListPage extends React.Component<DeckListPageProps> {
 
   renderCards = () => {
     return this.props.deck.map((card: Card, ind: number) => {
-      return <CardPreview card={card} key={ind}/>
+      return <CardPreview card={card} index={ind} key={ind} navigation={this.props.navigation}/>
     });
   };
 
@@ -72,7 +77,7 @@ const styles = StyleSheet.create({
     height: viewportHeight * 0.2
   },
   image: {
-    // flex: 1,
+    flex: 1,
     ...StyleSheet.absoluteFillObject,
     resizeMode: 'cover',
   }

@@ -23,14 +23,10 @@ type Props = {
 }
 
 class CardCarousel extends React.Component<Props> {
-
-  componentDidMount() {
-    this.props.addDeck(DeckLoader.getJaceDeck());
-  }
-
-  onSwipeDown() {
+  onSwipeDown = () => {
     console.log("swiped down");
-  }
+    this.props.navigation.navigate('DeckList');
+  };
 
   static renderItem({item, index}: { item: Card, index: number }) {
     return (
@@ -60,6 +56,7 @@ class CardCarousel extends React.Component<Props> {
               this._carousel = c;
             }}
             data={this.props.deck}
+            firstItem={this.props.navigation.getParam('index')}
             renderItem={CardCarousel.renderItem}
             sliderWidth={sliderWidth}
             itemWidth={itemWidth}
@@ -75,13 +72,7 @@ const mapStateToProps = (state) => {
   return {deck: state.decks.length ? state.decks[0] : []}
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    addDeck: (deck: Array<Card>) => dispatch(addDeck(deck))
-  }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CardCarousel)
+export default connect(mapStateToProps)(CardCarousel)
 
 export const colors = {
   black: '#1a1917',
