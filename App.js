@@ -1,25 +1,23 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import CardCarousel from "./CardCarousel";
+import {Platform, StyleSheet, View} from 'react-native';
 import {Provider} from "react-redux";
-import {store} from "./store/store";
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import {store} from "./src/store/store";
+import DeckListPage from "./src/DeckListPage";
+import {createSwitchNavigator, createAppContainer} from 'react-navigation';
+import CardCarousel from "./src/CardCarousel";
 
 type Props = {};
+
+const navigator = createSwitchNavigator({
+  DeckList: {
+    screen: DeckListPage
+  },
+  Carousel: {
+    screen: CardCarousel
+  }
+});
+
+const NavContainer = createAppContainer(navigator);
 
 export default class App extends Component<Props> {
 
@@ -27,7 +25,7 @@ export default class App extends Component<Props> {
     return (
       <Provider store={store}>
         <View style={styles.container}>
-          <CardCarousel />
+          <NavContainer />
         </View>
       </Provider>
     );

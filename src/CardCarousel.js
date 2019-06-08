@@ -1,18 +1,13 @@
 import Carousel from 'react-native-snap-carousel';
 import React from "react";
-import {Dimensions, Image, Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import * as DeckLoader from "./DeckLoader";
 import {connect} from "react-redux";
 import type {Card} from "./store/DeckTypes";
 import {addDeck} from "./store/DecksReducer";
+import GestureRecognizer from "react-native-swipe-gestures";
+import {IS_IOS, viewportHeight, viewportWidth, wp} from "./ViewUtils";
 
-const IS_IOS = Platform.OS === 'ios';
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
-
-function wp (percentage) {
-  const value = (percentage * viewportWidth) / 100;
-  return Math.round(value);
-}
 
 const slideHeight = viewportHeight * 0.50;
 const slideWidth = wp(75);
@@ -33,15 +28,22 @@ class CardCarousel extends React.Component<Props> {
     this.props.addDeck(DeckLoader.getJaceDeck());
   }
 
-  static renderItem({item, index}: {item: Card, index: number}) {
+  onSwipeDown() {
+    console.log("swiped down");
+  }
+
+  static renderItem({item, index}: { item: Card, index: number }) {
     return (
       <TouchableOpacity
         activeOpacity={1}
         style={styles.slideInnerContainer}
-        onPress={() => { alert(`You've clicked '${item.name}'`); }}
+        onPress={() => {
+          alert(`You've clicked '${item.name}'`);
+        }}
       >
         <View style={styles.imageContainer}>
-          <Image style={styles.image} source={{uri: `https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${item.multiverseId}&type=card`}} />
+          <Image style={styles.image}
+                 source={{uri: `https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${item.multiverseId}&type=card`}}/>
         </View>
       </TouchableOpacity>
     )
@@ -49,21 +51,26 @@ class CardCarousel extends React.Component<Props> {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Carousel
-          ref={(c) => {
-            this._carousel = c;
-          }}
-          data={this.props.deck}
-          renderItem={CardCarousel.renderItem}
-          sliderWidth={sliderWidth}
-          itemWidth={itemWidth}
-          sliderHeight={slideHeight}
-        />
-      </View>
+      <GestureRecognizer
+        onSwipeDown={this.onSwipeDown}
+      >
+        <View style={styles.container}>
+          <Carousel
+            ref={(c) => {
+              this._carousel = c;
+            }}
+            data={this.props.deck}
+            renderItem={CardCarousel.renderItem}
+            sliderWidth={sliderWidth}
+            itemWidth={itemWidth}
+            sliderHeight={slideHeight}
+          />
+        </View>
+      </GestureRecognizer>
     )
   }
 }
+
 const mapStateToProps = (state) => {
   return {deck: state.decks.length ? state.decks[0] : []}
 };

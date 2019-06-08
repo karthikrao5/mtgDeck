@@ -1,6 +1,6 @@
 // @flow
 
-import * as Jace from './JaceArcaneStrategist.json';
+import * as Jace from '../JaceArcaneStrategist.json';
 import type {Card} from "./store/DeckTypes";
 
 
