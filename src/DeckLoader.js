@@ -22,7 +22,7 @@ export const getAllDeckFileNames = () => {
 
 export const getDeckById = (deckFileName: string) => {
   let file = `./data/${deckFileName}`;
-  const module = import(file).then((json) => {
-    console.log(json);
-  })
+  // const module = import(file).then((json) => {
+  //   console.log(json);
+  // })
 };

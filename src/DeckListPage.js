@@ -21,7 +21,7 @@ class DeckListPage extends React.Component {
 
   _deckPressed = (event, id) => {
     console.log(`onpress clicked with id ${id}`);
-    DeckLoader.getDeckById(id);
+    // DeckLoader.getDeckById(id);
   };
 
   renderDeckButtons = () => {
