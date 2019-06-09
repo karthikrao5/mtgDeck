@@ -1,17 +1,21 @@
 import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Provider} from "react-redux";
-import DeckListPage from "./src/DeckListPage";
+import DeckViewPage from "./src/DeckViewPage";
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import CardCarousel from "./src/CardCarousel";
 import {PersistGate} from 'redux-persist/integration/react'
 import {persistor, store} from "./src/store/store";
+import DeckListPage from "./src/DeckListPage";
 
 type Props = {};
 
 const navigator = createSwitchNavigator({
-  DeckList: {
+  DeckView: {
     screen: DeckListPage
+  },
+  DeckList: {
+    screen: DeckViewPage
   },
   Carousel: {
     screen: CardCarousel

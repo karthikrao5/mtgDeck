@@ -2,8 +2,8 @@
 import {createSelector} from 'reselect'
 import type {Card} from "../store/DeckTypes";
 
-const getDeckState = (state) => state.deck;
-const getImageUrls= (state) => state.images.imageUrls;
+const getDeckState = (state) => state.deck.deck;
+const getImageUrls = (state) => state.images.imageUrls;
 
 const getImageForCardState = (state, props) => {
   return state.images.imageUrls[props.card.multiverseId];

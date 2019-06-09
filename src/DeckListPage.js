@@ -1,73 +1,59 @@
-// @flow
-import React from "react";
-import {Button, ScrollView, StyleSheet, View} from 'react-native';
-import {connect} from "react-redux";
-import type {Card} from "./store/DeckTypes";
-import {addDeck} from "./store/DecksReducer";
+import React from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import * as DeckLoader from "./DeckLoader";
-import {makeGetDeckWithImages} from "./selectors";
-import CardPreview from "./CardPreview";
-import {persistor} from "./store/store";
+import {ButtonWrapper} from "./ButtonWrapper";
+import {connect} from "react-redux";
+import type {Deck} from "./store/DeckTypes";
+import {addDeck} from "./store/DecksReducer";
 
-type DeckListPageProps = {
-  deck: Array<Card>,
-  addDeck: () => void
-}
+class DeckListPage extends React.Component {
 
-class DeckListPage extends React.Component<DeckListPageProps> {
-
-  componentDidMount() {
-    if (!this.props.deck.length > 0) {
-      this.props.addDeck(DeckLoader.getJaceDeck());
+  constructor(props) {
+    super(props);
+    this.state = {
+      deckList: []
     }
   }
 
-  renderCards = () => {
-    if (this.props.deck.length > 0) {
-      console.log(this.props.deck.length);
-      return this.props.deck.map((card: Card, ind: number) => {
-        return <CardPreview card={card}
-                            index={ind}
-                            key={ind}
-                            navigation={this.props.navigation} />
-      });
-    }
+  componentDidMount() {
+    this.setState({deckList: DeckLoader.getAllDeckFileNames()})
+  }
+
+  _deckPressed = (event, id) => {
+    console.log(`onpress clicked with id ${id}`);
+    DeckLoader.getDeckById(id);
+  };
+
+  renderDeckButtons = () => {
+    return this.state.deckList.map((item, ind) => {
+      return <ButtonWrapper key={ind}
+                     title={item.deckName}
+                     onPress={this._deckPressed} id={item.fileName}/>
+    })
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Button onPress={() => {
-          persistor.purge().then(() => {
-            console.log("purged");
-          })
-        }} title={"Purge"}/>
-        <ScrollView contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
-          {this.renderCards()}
+        <ScrollView>
+          <Text>DeckListPage</Text>
+          {this.renderDeckButtons()}
         </ScrollView>
       </View>
-    );
+    )
   }
 }
 
-const makeMapStateToProps = () => {
-  const getDeckWithImages = makeGetDeckWithImages();
-  return (state) => {
-    return {
-      deck: getDeckWithImages(state)
-    }
-  };
-};
-
 const mapDispatchToProps = dispatch => {
   return {
-    addDeck: (deck: Array<Card>) => {
+    addDeck: (deck: Deck) => {
       dispatch(addDeck(deck))
     }
   }
 };
 
-export default connect(makeMapStateToProps, mapDispatchToProps)(DeckListPage)
+export default connect(null, mapDispatchToProps)(DeckListPage)
+
 
 const styles = StyleSheet.create({
   container: {

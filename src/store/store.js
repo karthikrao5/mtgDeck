@@ -4,6 +4,7 @@ import {decksReducer} from "./DecksReducer";
 import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
 import {imagesReducer} from "./ImagesReducer";
+import {deckListReducer} from "./DeckListReducer";
 
 const persistConfig = {
   key: 'root',
@@ -12,7 +13,8 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, combineReducers(
   {
     deck: decksReducer,
-    images: imagesReducer
+    images: imagesReducer,
+    deckList: deckListReducer
   }
 ));
 //

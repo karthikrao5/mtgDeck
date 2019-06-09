@@ -69,9 +69,8 @@ class CardCarousel extends React.Component<Props> {
 }
 
 const makeMapStateToProps = () => {
-  const getCardToDisplay = makeGetCardToDisplay();
   const getDeckWithImages = makeGetDeckWithImages();
-  return (state, props) => {
+  return (state) => {
     return {
       deck: getDeckWithImages(state)
     }
