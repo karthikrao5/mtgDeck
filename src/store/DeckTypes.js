@@ -2,7 +2,8 @@
 
 export type Card = {
   multiverseId: number,
-  name: string
+  name: string,
+  imageUrl: string
 }
 
 export type Deck = {

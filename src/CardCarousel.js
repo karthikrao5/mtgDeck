@@ -1,12 +1,11 @@
 import Carousel from 'react-native-snap-carousel';
 import React from "react";
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
-import * as DeckLoader from "./DeckLoader";
 import {connect} from "react-redux";
 import type {Card} from "./store/DeckTypes";
-import {addDeck} from "./store/DecksReducer";
 import GestureRecognizer from "react-native-swipe-gestures";
 import {IS_IOS, viewportHeight, viewportWidth, wp} from "./ViewUtils";
+import {getDeck, makeGetCardToDisplay, makeGetDeckWithImages} from "./selectors";
 
 
 const slideHeight = viewportHeight * 0.50;
@@ -39,7 +38,8 @@ class CardCarousel extends React.Component<Props> {
       >
         <View style={styles.imageContainer}>
           <Image style={styles.image}
-                 source={{uri: `https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${item.multiverseId}&type=card`}}/>
+                 source={{uri: item.imageUrl}}
+          />
         </View>
       </TouchableOpacity>
     )
@@ -68,11 +68,16 @@ class CardCarousel extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {deck: state.decks.length ? state.decks[0] : []}
+const makeMapStateToProps = () => {
+  const getCardToDisplay = makeGetCardToDisplay();
+  const getDeckWithImages = makeGetDeckWithImages();
+  return (state, props) => {
+    return {
+      deck: getDeckWithImages(state)
+    }
+  };
 };
-
-export default connect(mapStateToProps)(CardCarousel)
+export default connect(makeMapStateToProps)(CardCarousel)
 
 export const colors = {
   black: '#1a1917',
@@ -86,8 +91,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 30,
     paddingTop: 30,
-    borderColor: 'red',
-    borderWidth: 1
+    // borderColor: 'red',
+    // borderWidth: 1
   },
   slideInnerContainer: {
     width: itemWidth,
@@ -103,8 +108,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopLeftRadius: entryBorderRadius,
     borderTopRightRadius: entryBorderRadius,
-    borderWidth: 2,
-    borderColor: 'red'
+    // borderWidth: 2,
+    // borderColor: 'red'
   },
   image: {
     flex: 1,
@@ -113,7 +118,7 @@ const styles = StyleSheet.create({
     borderRadius: IS_IOS ? entryBorderRadius : 0,
     borderTopLeftRadius: entryBorderRadius,
     borderTopRightRadius: entryBorderRadius,
-    borderWidth: 2,
-    borderColor: 'green'
+    // borderWidth: 2,
+    // borderColor: 'green'
   }
 });

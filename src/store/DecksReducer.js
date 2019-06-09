@@ -1,10 +1,9 @@
-import type {Card, Deck} from "./DeckTypes";
-
-type State = {
-  decks: Array<Deck>
-}
+import type {Card} from "./DeckTypes";
+import {getImageUrl} from "../DeckLoader";
+// import { PURGE, REHYDRATE } from 'redux-persist';
 
 export const ADD_DECK = 'ADD_DECK';
+
 
 export const addDeck = (deck: Array<Card>) => {
   return {
@@ -13,15 +12,19 @@ export const addDeck = (deck: Array<Card>) => {
   }
 };
 
+type State = {
+  deck: Array<Card>,
+}
 
-const INITIAL_STATE: {decks: Array<Card>} = {
-  decks: []
+const INITIAL_STATE: State = {
+  deck: []
 };
+
 
 export const decksReducer = (state: State = INITIAL_STATE, action): State => {
   switch (action.type) {
     case ADD_DECK:
-      return {...state, decks: [...state.decks, action.deck]};
+      return {...state, deck: action.deck};
     default:
       return state
   }

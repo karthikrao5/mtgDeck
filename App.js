@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Provider} from "react-redux";
-import {store} from "./src/store/store";
 import DeckListPage from "./src/DeckListPage";
-import {createSwitchNavigator, createAppContainer} from 'react-navigation';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import CardCarousel from "./src/CardCarousel";
+import {PersistGate} from 'redux-persist/integration/react'
+import {persistor, store} from "./src/store/store";
 
 type Props = {};
 
@@ -24,9 +25,11 @@ export default class App extends Component<Props> {
   render() {
     return (
       <Provider store={store}>
-        <View style={styles.container}>
-          <NavContainer />
-        </View>
+        <PersistGate persistor={persistor} loading={null}>
+          <View style={styles.container}>
+            <NavContainer/>
+          </View>
+        </PersistGate>
       </Provider>
     );
   }
