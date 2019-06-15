@@ -1,10 +1,10 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import * as DeckLoader from "./DeckLoader";
-import {ButtonWrapper} from "./ButtonWrapper";
+import * as DeckLoader from "../DeckLoader";
+import {ButtonWrapper} from "../ButtonWrapper";
 import {connect} from "react-redux";
-import type {Deck} from "./store/DeckTypes";
-import {addDeck} from "./store/DecksReducer";
+import type {Deck} from "../store/DeckTypes";
+import {addDeck} from "../store/DecksReducer";
 
 class DeckListPage extends React.Component {
 

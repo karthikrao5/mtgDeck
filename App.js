@@ -1,24 +1,34 @@
 import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Provider} from "react-redux";
-import DeckViewPage from "./src/DeckViewPage";
-import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import {createAppContainer, createSwitchNavigator, createStackNavigator} from 'react-navigation';
 import CardCarousel from "./src/CardCarousel";
 import {PersistGate} from 'redux-persist/integration/react'
 import {persistor, store} from "./src/store/store";
+import DeckListPage from "./src/pages/DeckListPage";
+import DeckViewPage from "./src/pages/DeckViewPage";
+import AddDeckPage from "./src/pages/AddDeckPage";
+import {HomePage} from "./src/pages/HomePage";
 
 type Props = {};
 
-const navigator = createSwitchNavigator({
-  DeckList: {
-    screen: DeckViewPage
+const stackNav = createStackNavigator({
+  Home: HomePage,
+  AddDeckPage: {
+    screen: AddDeckPage
   },
-  Carousel: {
-    screen: CardCarousel
-  }
-});
+  // DeckList: {
+  //   screen: DeckListPage
+  // },
+  // Carousel: {
+  //   screen: CardCarousel
+  // },
+  // DeckView: {
+  //   screen: DeckViewPage
+  // }
+}, {initialRouteName: 'AddDeckPage'});
 
-const NavContainer = createAppContainer(navigator);
+const NavContainer = createAppContainer(stackNav);
 
 export default class App extends Component<Props> {
 
@@ -26,9 +36,7 @@ export default class App extends Component<Props> {
     return (
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={null}>
-          <View style={styles.container}>
-            <NavContainer/>
-          </View>
+          <NavContainer/>
         </PersistGate>
       </Provider>
     );

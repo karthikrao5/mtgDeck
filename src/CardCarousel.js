@@ -24,7 +24,7 @@ type Props = {
 class CardCarousel extends React.Component<Props> {
   onSwipeDown = () => {
     console.log("swiped down");
-    this.props.navigation.navigate('DeckList');
+    this.props.navigation.navigate('DeckView');
   };
 
   static renderItem({item, index}: { item: Card, index: number }) {

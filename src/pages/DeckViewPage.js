@@ -2,12 +2,12 @@
 import React from "react";
 import {Button, ScrollView, StyleSheet, View} from 'react-native';
 import {connect} from "react-redux";
-import type {Card} from "./store/DeckTypes";
-import {addDeck} from "./store/DecksReducer";
-import * as DeckLoader from "./DeckLoader";
-import {makeGetDeckWithImages} from "./selectors";
-import CardPreview from "./CardPreview";
-import {persistor} from "./store/store";
+import type {Card} from "../store/DeckTypes";
+import {addDeck} from "../store/DecksReducer";
+import * as DeckLoader from "../DeckLoader";
+import {makeGetDeckWithImages} from "../selectors/index";
+import CardPreview from "../CardPreview";
+import {persistor} from "../store/store";
 
 type DeckListPageProps = {
   deck: Array<Card>,
